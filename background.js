@@ -1,5 +1,8 @@
 running = 0
 
+var audio = new Audio();
+audio.src="system.wav" 
+
 function qiang(id){
 	chrome.cookies.get({"url": "http://fuwu.jikexueyuan.com", "name": "XSRF-TOKEN"}, function(cookie){
 		console.log(cookie.value);
@@ -40,10 +43,11 @@ function notCorrected(){
 		id = result[1];	
 		console.log(id);
 		qiang(id);
+		audio.play(); 
 		result = re.exec(response);
 	}
 	if(running == 1){
-		//setTimeout(notCorrected, 10000)
+		setTimeout(notCorrected, 10000)
 	}
 }
 
