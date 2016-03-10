@@ -1,21 +1,44 @@
 running = 0
 
+function qiang(id){
+	var id = $(this).data('id');
+	$.ajax({
+		url: 'http://fuwu.jikexueyuan.com/homework/take-homework',
+		type: 'POST',
+		dataType: 'json',
+		data: {
+			id: id
+		},
+		success: function(data){
+			if(data.error === 0){
+				alert('ÇÀµ¥³É¹¦');
+				window.location.href = window.APP_URL+'homework/'+id+'/correct';
+			} else {
+				alert(data.message);
+			}
+		}
+	});
+}
+
 function notCorrected(){
 	var xhr = new XMLHttpRequest();
-	xhr.open("GET", "http://fuwu.jikexueyuan.com/homework/not-corrected", false);
+	//xhr.open("GET", "http://fuwu.jikexueyuan.com/homework/not-corrected", false);
+	xhr.open("GET", "http://fuwu.jikexueyuan.com/homework/my", false);
 	xhr.send();
-	var response = xhr.responseText.replace(/\n| |\r/g, "");
-	//result = response.match(/<td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td>/g);
-	//chrome.extension.getBackgroundPage().console.log(response);
-
-	alert(response);
-	var result = response.match(/<th>(.*?)<\/th><th>(.*?)<\/th><th>(.*?)<\/th><th>(.*?)<\/th><th>(.*?)<\/th><th>(.*?)<\/th><th>(.*?)<\/th><th>(.*?)<\/th><th>(.*?)<\/th>/g);
+	var response = xhr.responseText.replace(/\n| |\r|\t/g, "");
 	
-	alert(result);
+	re = /<td>(.*?)<\/td>(<td>.*?<\/td>){8}/g;
+	result = re.exec(response);
+	while(result){
+		id = result[1];	
+		qiang(id);
+		result = re.exec(response);
+	}
 	if(running == 1){
 		//setTimeout(notCorrected, 10000)
 	}
 }
+
 chrome.browserAction.onClicked.addListener(
 	function(tab) { 
 		if(running == 0){
