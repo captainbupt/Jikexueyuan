@@ -1,4 +1,4 @@
-running = 0
+﻿running = 0
 
 var audio = new Audio();
 audio.src="system.wav" 
@@ -12,7 +12,7 @@ function qiang(id){
 			dataType: 'json',
 			headers: {
 				// modified this line every time
-				"X-CSRF-TOKEN": "S0Gw67kPEPJBUqRZoDgvueKgRjcVf7X8QmW4YUmE",
+				"X-CSRF-TOKEN": "AlLN4x6UnJLW77nlnevglA9A4tDj4scymRtc9Mml",
 				"X-Requested-With": "XMLHttpRequest"
 			},
 			data: {
@@ -37,14 +37,16 @@ function notCorrected(){
 	xhr.send();
 	var response = xhr.responseText.replace(/\n| |\r|\t/g, "");
 	
-	re = /<td>(.*?)<\/td>(<td>.*?<\/td>){8}/g;
+	re = /<td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td>/g;
 	result = re.exec(response);
 	if(result){
-		id = result[1];	
-		console.log(id);
-		qiang(id);
 		audio.play(); 
-		result = re.exec(response);
+		if(result[4].indexOf("C++") < 0 && result[4].indexOf("NoOneDies") < 0){
+			id = result[1];	
+			console.log(id);
+			qiang(id);
+			result = re.exec(response);
+		}
 	}
 	if(running == 1){
 		setTimeout(notCorrected, 10000)
