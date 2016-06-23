@@ -39,14 +39,15 @@ function notCorrected(){
 	
 	re = /<td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td>/g;
 	result = re.exec(response);
-	if(result){
-		audio.play(); 
+	while(result){
+		audio.play();
+		// filter the task you don't want to get
 		if(result[4].indexOf("C++") < 0 && result[4].indexOf("NoOneDies") < 0){
 			id = result[1];	
 			console.log(id);
 			qiang(id);
-			result = re.exec(response);
 		}
+		result = re.exec(response);
 	}
 	if(running == 1){
 		setTimeout(notCorrected, 10000)
